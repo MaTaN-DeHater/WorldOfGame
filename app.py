@@ -10,9 +10,9 @@ def start_play():
                         "2. Guess Game - guess a number and see if you chose like the computer.\n"
                         "3. Currency Roulette - try and guess the value of a random amount of USD in ILS. \n")
     # Validate the game option
-    if game_option not in ['1', '2', '3']:
+    if game_option not in [1, 2, 3]:
         print("Invalid option. Please choose a valid game number.")
-        return
+        return game_option
 
     # Prompt the user to select a difficulty level
     difficulty_level = input("Please choose a difficulty level between 1 and 5: ")
@@ -20,6 +20,6 @@ def start_play():
     # Validate the difficulty level
     if difficulty_level not in ['1', '2', '3', '4', '5']:
         print("Invalid difficulty level. Please choose a number between 1 and 5.")
-        return
+        return difficulty_level
 
     print(f"You have chosen game {game_option} with difficulty level {difficulty_level}.")
