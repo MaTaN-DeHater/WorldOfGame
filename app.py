@@ -18,7 +18,7 @@ def start_play():
     difficulty_level = input("Please choose a difficulty level between 1 and 5: ")
 
     # Validate the difficulty level
-    if difficulty_level not in ['1', '2', '3', '4', '5']:
+    if difficulty_level not in [1, 2, 3, 4, 5]:
         print("Invalid difficulty level. Please choose a number between 1 and 5.")
         return difficulty_level
 
