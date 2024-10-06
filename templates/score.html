@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scores Game</title>
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #score {
+            font-size: 2rem;
+            color: green;
+            margin: 20px 0;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>The score is:</h1>
+        <div id="score">{{ SCORE }}</div>  <!-- Displaying the SCORE variable from Flask -->
+    </div>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const scoreElement = document.getElementById("score");
+            const score = scoreElement ? scoreElement.innerText : "0";
+
+
+            console.log("The score is:", score);
+
+
+            alert("Your current score is: " + score);
+
+
+            if (parseInt(score) > 50) {
+                scoreElement.style.color = "blue";
+            }
+        });
+    </script>
+</body>
+</html>

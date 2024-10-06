@@ -1,0 +1,4 @@
+selenium==4.11.2
+flask==2.3.3
+webdriver-manager==4.0.0
+forex-python==1.8
