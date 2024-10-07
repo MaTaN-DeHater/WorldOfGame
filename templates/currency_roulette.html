@@ -1,0 +1,15 @@
+<!-- templates/currency_roulette.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Currency Roulette</title>
+</head>
+<body>
+    <h1>Currency Roulette Game - Difficulty {{ difficulty }}</h1>
+    <p>Enter your guess for the value in ILS:</p>
+    <form method="post">
+        <input type="number" step="0.01" name="user_guess" required>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

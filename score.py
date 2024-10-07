@@ -1,33 +1,54 @@
+# score.py
+import json
 import os
-from utils import SCORES_FILE_NAME, BAD_RETURN_CODE
 
-POINTS_OF_WINNING = lambda difficulty: (difficulty * 3) + 5
+SCORES_FILE_NAME = "scores.json"
 
 
-def add_score(difficulty: int) -> None:
-    points_to_add = POINTS_OF_WINNING(difficulty)
+def load_scores():
+    """
+    Loads scores from the JSON file. If the file does not exist, initializes an empty score dictionary.
 
-    try:
+    :return: A dictionary representing all scores.
+    """
+    # Check if the scores file exists, and create it if not
+    if not os.path.exists(SCORES_FILE_NAME):
+        # Create an empty score dictionary with the "players" key
+        initial_scores = {"players": {}}
+        save_scores(initial_scores)  # Save the initial structure to the file
+        return initial_scores
 
-        if not os.path.exists(SCORES_FILE_NAME):
-            with open(SCORES_FILE_NAME, 'w') as file:
-                file.write('0')
+    # Load the existing scores from the file
+    with open(SCORES_FILE_NAME, "r") as file:
+        return json.load(file)
 
-        # Read the current score
-        with open(SCORES_FILE_NAME, 'r') as file:
-            current_score = file.read().strip()
-            if current_score.isdigit():
-                current_score = int(current_score)
-            else:
-                current_score = 0
 
-        new_score = current_score + points_to_add
+def save_scores(scores):
+    """
+    Saves the given scores dictionary to the JSON file.
 
-        with open(SCORES_FILE_NAME, 'w') as file:
-            file.write(str(new_score))
+    :param scores: A dictionary containing the updated scores.
+    """
+    with open(SCORES_FILE_NAME, "w") as file:
+        json.dump(scores, file, indent=4)
 
-        print(f"Score updated! Your current score is: {new_score}")
 
-    except Exception as e:
-        print(f"An error occurred while updating the score: {e}")
-        return BAD_RETURN_CODE
+def add_score(username, game, difficulty):
+    """
+    Adds a score for a specific user, game, and difficulty.
+
+    :param username: The name of the player.
+    :param game: The type of game (e.g., "memory_game", "guess_game", "currency_roulette_game").
+    :param difficulty: The difficulty level of the game (1 to 5).
+    """
+    scores = load_scores()  # Load the current scores from the JSON file
+
+    # Set default values for nested dictionaries if keys are missing
+    user_scores = scores["players"].setdefault(username, {})
+    game_scores = user_scores.setdefault(game, {})
+
+    # Calculate the new score
+    points_of_winning = (difficulty * 3) + 5
+    game_scores[difficulty] = game_scores.get(difficulty, 0) + points_of_winning
+
+    save_scores(scores)  # Save the updated scores back to the JSON file

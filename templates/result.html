@@ -1,11 +1,13 @@
+<!-- templates/result.html -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Game Result</title>
 </head>
 <body>
-    <h1>Game Result</h1>
-    <p>{{ result }}</p>
-    <a href="{{ url_for('home') }}">Play Again</a>
+    <h1>{{ result }}</h1>
+    <a href="/select_game">Play Another Game</a>
+    <br>
+    <a href="/scores">View Scores</a>
 </body>
 </html>

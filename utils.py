@@ -1,12 +1,11 @@
+# utils.py
 import os
-import platform
 
-SCORES_FILE_NAME = "./Scores.txt"
+SCORES_FILE_NAME = "Scores.txt"
 BAD_RETURN_CODE = -1
 
-
 def screen_cleaner():
-    if platform.system() == "Windows":
-        os.system('cls')
-    else:
-        os.system('clear')
+    """
+    Clears the console screen.
+    """
+    os.system('cls' if os.name == 'nt' else 'clear')

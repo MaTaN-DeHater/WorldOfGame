@@ -1,33 +1,34 @@
+# guess_game.py
 import random
 
+def generate_number(difficulty):
+    """
+    Generates a random number based on the difficulty level.
+    """
+    return random.randint(0, difficulty)
 
-def generate_number(difficulty: int) -> int:
-    secret_number = random.randint(0, difficulty)
-    return secret_number
+def get_guess_from_user(difficulty):
+    """
+    Prompts the user to guess a number.
+    """
+    guess = int(input(f"Guess a number between 0 and {difficulty}: "))
+    return guess
 
-
-def get_guess_from_user(difficulty: int) -> int:
-    while True:
-        try:
-            user_guess = int(input(f"Please enter your guess (0 to {difficulty}): "))
-            if 0 <= user_guess <= difficulty:
-                return user_guess
-            else:
-                print(f"Invalid input. Please enter a number between 0 and {difficulty}.")
-        except ValueError:
-            print("Invalid input. Please enter a valid integer.")
-
-
-def compare_results(secret_number: int, user_guess: int) -> bool:
+def compare_results(secret_number, user_guess):
+    """
+    Compares the secret number and the user's guess.
+    """
     return secret_number == user_guess
 
-
-def play(difficulty: int) -> bool:
+def play(difficulty):
+    """
+    Plays the Guess Game.
+    """
     secret_number = generate_number(difficulty)
     user_guess = get_guess_from_user(difficulty)
-    is_winner = compare_results(secret_number, user_guess)
-    if is_winner:
-        print("Congratulations! You've guessed the correct number!")
+    if compare_results(secret_number, user_guess):
+        print("You won!")
+        return True
     else:
-        print(f"Sorry, you lost. The correct number was {secret_number}.")
-    return is_winner
+        print(f"You lost! The correct number was {secret_number}.")
+        return False

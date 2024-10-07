@@ -1,59 +1,47 @@
-from guess_game import play as play_guess_game
-from memory_game import play as play_memory_game
-from currency_roulette_game import play as play_currency_roulette_game
+# app.py
 from score import add_score
-from utils import screen_cleaner
 
+# Global variable to store username across functions
+username = ""
 
 def welcome():
-    name = input("What is your name? ")
-    print(f"Hi {name} and welcome to the World of Games: The Epic Journey")
-
+    """
+    Prints a welcome message to the user.
+    """
+    global username
+    username = input("Please enter your name: ")
+    print(f"Hi {username} and welcome to the World of Games: The Epic Journey!")
 
 def start_play():
-    screen_cleaner()
+    """
+    Prompts the user to choose a game and difficulty level.
+    """
+    print("Please choose a game to play:")
+    print("1. Memory Game - a sequence of numbers will appear for 1 second and you have to guess it back.")
+    print("2. Guess Game - guess a number and see if you chose like the computer.")
+    print("3. Currency Roulette - try and guess the value of a random amount of USD in ILS")
 
-    game_option = input("Please choose a game: \n"
-                        "1. Memory Game - a sequence of numbers will appear for 1 second and you have to guess it "
-                        "back. \n"
-                        "2. Guess Game - guess a number and see if you chose like the computer.\n"
-                        "3. Currency Roulette - try and guess the value of a random amount of USD in ILS. \n")
+    game_choice = int(input("Enter the game number: "))
+    difficulty = int(input("Please choose game difficulty from 1 to 5: "))
 
-    try:
-        game_option = int(game_option)
-    except ValueError:
-        print("Invalid input. Please enter a number corresponding to the game option.")
+    # Determine the game and play
+    game_map = {1: "memory_game", 2: "guess_game", 3: "currency_roulette_game"}
+    game_name = game_map.get(game_choice)
+    if not game_name:
+        print("Invalid choice. Please restart the program.")
         return
 
-    if game_option not in [1, 2, 3]:
-        print("Invalid option. Please choose a valid game number.")
-        return
+    # Import the appropriate game module and start the game
+    if game_choice == 1:
+        from memory_game import play
+    elif game_choice == 2:
+        from guess_game import play
+    elif game_choice == 3:
+        from currency_roulette_game import play
 
-    difficulty_level = input("Please choose a difficulty level between 1 and 5: ")
-
-    try:
-        difficulty_level = int(difficulty_level)
-    except ValueError:
-        print("Invalid input. Please enter a number for difficulty level.")
-        return
-
-    if difficulty_level not in [1, 2, 3, 4, 5]:
-        print("Invalid difficulty level. Please choose a number between 1 and 5.")
-        return
-
-    print(f"You have chosen game {game_option} with difficulty level {difficulty_level}.")
-
-    game_won = False
-
-    if game_option == 1:
-        game_won = play_memory_game(difficulty_level)
-    elif game_option == 2:
-        game_won = play_guess_game(difficulty_level)
-    elif game_option == 3:
-        game_won = play_currency_roulette_game(difficulty_level)
-
-    if game_won:
-        add_score(difficulty_level)
-        print(f"Congratulations! You won the game. Your score has been updated.")
+    # Play the game and update score if user wins
+    if play(difficulty):
+        add_score(username, game_name, difficulty)
+        print("Your score has been updated!")
     else:
-        print(f"Sorry, you lost the game. Better luck next time.")
+        print("Better luck next time!")

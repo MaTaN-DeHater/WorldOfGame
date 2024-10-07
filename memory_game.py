@@ -1,49 +1,39 @@
 # memory_game.py
-
 import random
-import time
 
 
-def generate_sequence(difficulty: int) -> list[int]:
+def generate_sequence(difficulty):
+    """
+    Generates a list of random numbers between 1 and 101 with length equal to difficulty.
+
+    :param difficulty: Length of the sequence to be generated.
+    :return: List of random numbers.
+    """
     return [random.randint(1, 101) for _ in range(difficulty)]
 
 
-def display_sequence(sequence: list[int], display_time: float = 0.7):
-    print(f"Memorize this sequence: {sequence}")
-    time.sleep(display_time)
+def is_list_equal(list1, list2):
+    """
+    Compares two lists to check if they are identical.
 
-    print("\n" * 100)
-
-
-def get_list_from_user(difficulty: int) -> list[int]:
-    user_input = input(f"Enter the {difficulty} numbers you saw, separated by space: ")
-    try:
-
-        user_numbers = list(map(int, user_input.split()))
-        if len(user_numbers) == difficulty:
-            return user_numbers
-        else:
-            print(f"Invalid input. You must enter exactly {difficulty} numbers.")
-            return get_list_from_user(difficulty)
-    except ValueError:
-        print("Invalid input. Please enter numbers only.")
-        return get_list_from_user(difficulty)
+    :param list1: First list.
+    :param list2: Second list.
+    :return: True if both lists are identical, False otherwise.
+    """
+    return list1 == list2
 
 
-def is_list_equal(sequence: list[int], user_sequence: list[int]) -> bool:
-    return sequence == user_sequence
+def play(difficulty, user_sequence):
+    """
+    Initiates the Memory Game.
 
-
-def play(difficulty: int) -> bool:
-    sequence = generate_sequence(difficulty)
-
-    display_sequence(sequence)
-
-    user_sequence = get_list_from_user(difficulty)
-
-    if is_list_equal(sequence, user_sequence):
-        print("Congratulations! You have a great memory!")
+    :param difficulty: The difficulty level which determines the length of the sequence.
+    :param user_sequence: List of numbers input by the user.
+    :return: True if the user wins, False if the user loses.
+    """
+    generated_sequence = generate_sequence(difficulty)
+    print(f"Generated sequence: {generated_sequence}")  # This line is for testing; we'll display it on the UI
+    if is_list_equal(generated_sequence, user_sequence):
         return True
     else:
-        print(f"Sorry, the correct sequence was: {sequence}")
         return False

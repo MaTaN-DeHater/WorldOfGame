@@ -1,21 +1,15 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>World Of Game</title>
+    <title>World of Games</title>
 </head>
 <body>
-    <h1>Welcome to the World of Game</h1>
-    <form action="{{ url_for('play') }}" method="POST">
-        <label for="username">Enter your name:</label>
-        <input type="text" id="username" name="username" required><br><br>
-
-        <label for="game_option">Choose a game:</label>
-        <select id="game_option" name="game_option" required>
-            <option value="Game1">Game 1</option>
-            <option value="Game2">Game 2</option>
-        </select><br><br>
-
-        <input type="submit" value="Start Game">
+    <h1>Welcome to the World of Games</h1>
+    <form action="/set_username" method="post">
+        <label for="username">Enter your username:</label>
+        <input type="text" id="username" name="username" required>
+        <button type="submit">Start</button>
     </form>
 </body>
 </html>

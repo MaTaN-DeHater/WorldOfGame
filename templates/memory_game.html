@@ -1,0 +1,33 @@
+<!-- templates/memory_game.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Memory Game</title>
+    <script type="text/javascript">
+        // JavaScript function to hide the sequence after a short delay
+        function hideSequence() {
+            setTimeout(function() {
+                document.getElementById('sequence-display').style.display = 'none';
+                document.getElementById('input-form').style.display = 'block';
+            }, 3000);  // Adjust the delay time (3000 milliseconds = 3 seconds)
+        }
+    </script>
+</head>
+<body onload="hideSequence()">
+    <h1>Memory Game - Difficulty {{ difficulty }}</h1>
+
+    <div id="sequence-display">
+        <p>Remember this sequence:</p>
+        <h2>{{ sequence }}</h2> <!-- Show the generated sequence -->
+    </div>
+
+    <!-- Hidden input form initially, shown after the sequence is hidden -->
+    <div id="input-form" style="display:none;">
+        <p>Enter the sequence you memorized, separated by spaces:</p>
+        <form method="post">
+            <input type="text" name="user_sequence" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
