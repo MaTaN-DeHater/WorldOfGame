@@ -1,9 +1,11 @@
 # main_score.py
+import random
+
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from score import load_scores, add_score
 from memory_game import play as memory_play, generate_sequence
 from guess_game import play as guess_play
-from currency_roulette_game import play as currency_roulette_play
+from currency_roulette_game import play as currency_roulette_play, get_money_interval
 
 app = Flask(__name__)
 
@@ -83,12 +85,10 @@ def memory_game(difficulty):
 
 @app.route('/guess_game/<int:difficulty>', methods=['GET', 'POST'])
 def guess_game(difficulty):
-    """
-    Route for playing the Guess Game.
-    """
+
     if request.method == 'POST':
         user_guess = int(request.form.get('user_guess'))
-        if guess_play(difficulty, user_guess):
+        if guess_play(difficulty):
             add_score(username, 'guess_game', difficulty)
             result = f"Congratulations {username}, you won the Guess Game!"
         else:
@@ -99,18 +99,22 @@ def guess_game(difficulty):
 
 @app.route('/currency_roulette/<int:difficulty>', methods=['GET', 'POST'])
 def currency_roulette(difficulty):
-    """
-    Route for playing the Currency Roulette Game.
-    """
+
+    usd_amount = random.randint(1, 100)  # Generate a random USD amount
+
     if request.method == 'POST':
         user_guess = float(request.form.get('user_guess'))
-        if currency_roulette_play(difficulty, user_guess):
+        lower_bound, upper_bound = get_money_interval(difficulty, usd_amount)
+
+        if lower_bound <= user_guess <= upper_bound:
             add_score(username, 'currency_roulette_game', difficulty)
             result = f"Congratulations {username}, you won the Currency Roulette Game!"
         else:
-            result = f"Sorry {username}, you lost the Currency Roulette Game."
+            result = f"Sorry {username}, you lost the Currency Roulette Game. The correct range was between {lower_bound:.2f} and {upper_bound:.2f}."
+
         return render_template('result.html', result=result)
-    return render_template('currency_roulette.html', difficulty=difficulty)
+
+    return render_template('currency_roulette.html', difficulty=difficulty, usd_amount=usd_amount)
 
 
 @app.route('/scores')
