@@ -14,22 +14,24 @@ def start_play(user):
                         "2. Guess Game - guess a number and see if you chose like the computer.\n"
                         "3. Currency Roulette - try and guess the value of a random amount of USD in ILS. \n")
 
-    if game_option not in ['1', '2', '3']:
+    game_option = int(game_option)
+    if game_option not in [1, 2, 3]:
         print("Invalid option. Please choose a valid game number.")
         return
 
     difficulty_level = input("Please choose a difficulty level between 1 and 5: ")
-
-    if difficulty_level not in ['1', '2', '3', '4', '5']:
+    difficulty_level = int(difficulty_level)
+    if difficulty_level not in [1, 2, 3, 4, 5]:
         print("Invalid difficulty level. Please choose a number between 1 and 5.")
         return
 
-    difficulty_level = int(difficulty_level)
+
+
 
     game_modules = {
-        '1': 'memory_game',
-        '2': 'guess_game',
-        '3': 'currency_roulette_game'
+        1: 'memory_game',
+        2: 'guess_game',
+        3: 'currency_roulette_game'
     }
 
     selected_game = game_modules[game_option]
