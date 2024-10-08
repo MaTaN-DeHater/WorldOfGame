@@ -9,6 +9,3 @@ def clear_console():
         os.system('cls')
     else:  # For Unix-based systems (Linux, macOS, etc.)
         os.system('clear')
-
-
-clear_console()
