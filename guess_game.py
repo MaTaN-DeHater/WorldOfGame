@@ -1,7 +1,9 @@
 import random
 
+
 def generate_number(difficulty):
     return random.randint(0, difficulty)
+
 
 def get_guess_from_user(difficulty):
     while True:
@@ -14,8 +16,10 @@ def get_guess_from_user(difficulty):
         except ValueError:
             print("Invalid input. Please enter an integer.")
 
+
 def compare_results(secret_number, user_guess):
     return secret_number == user_guess
+
 
 def play(difficulty):
     secret_number = generate_number(difficulty)

@@ -1,8 +1,10 @@
 import random
 import time
 
+
 def generate_sequence(difficulty):
     return [random.randint(1, 101) for _ in range(difficulty)]
+
 
 def get_list_from_user(difficulty):
     while True:
@@ -16,8 +18,10 @@ def get_list_from_user(difficulty):
         except ValueError:
             print("Invalid input. Please enter numbers separated by spaces.")
 
+
 def is_list_equal(generated_sequence, user_sequence):
     return generated_sequence == user_sequence
+
 
 def play(difficulty):
     generated_sequence = generate_sequence(difficulty)

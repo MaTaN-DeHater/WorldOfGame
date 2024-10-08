@@ -1,9 +1,8 @@
-# score.py
-
 import os
 
 SCORES_FILE_NAME = "Scores.txt"
 BAD_RETURN_CODE = -1
+
 
 def add_score(difficulty):
     points_of_winning = (difficulty * 3) + 5
@@ -25,6 +24,7 @@ def add_score(difficulty):
         return BAD_RETURN_CODE
 
     return new_score
+
 
 def wipe_score():
     try:

@@ -5,7 +5,6 @@ def welcome():
     print(f"Hi {name} and welcome to the World of Games: The Epic Journey")
 
 
-
 def start_play():
     game_option = input("Please choose a game: \n"
                         "1. Memory Game - a sequence of numbers will appear for 1 second and you have to guess it "
@@ -13,22 +12,22 @@ def start_play():
                         "2. Guess Game - guess a number and see if you chose like the computer.\n"
                         "3. Currency Roulette - try and guess the value of a random amount of USD in ILS. \n")
 
-    # Validate the game option
+
     if game_option not in ['1', '2', '3']:
         print("Invalid option. Please choose a valid game number.")
         return
 
-    # Prompt the user to select a difficulty level
+
     difficulty_level = input("Please choose a difficulty level between 1 and 5: ")
 
-    # Validate the difficulty level
+
     if difficulty_level not in ['1', '2', '3', '4', '5']:
         print("Invalid difficulty level. Please choose a number between 1 and 5.")
         return
 
     difficulty_level = int(difficulty_level)
 
-    # Map game options to module names
+
     game_modules = {
         '1': 'memory_game',
         '2': 'guess_game',
@@ -37,7 +36,7 @@ def start_play():
 
     selected_game = game_modules[game_option]
 
-    # Dynamically import and play the selected game
+
     if selected_game == 'memory_game':
         from memory_game import play
     elif selected_game == 'guess_game':
@@ -48,6 +47,6 @@ def start_play():
     result = play(difficulty_level)
     print(f"Game result: {'Win' if result else 'Lose'}")
 
-    # If the user wins, add the score
+
     if result:
         add_score(difficulty_level)

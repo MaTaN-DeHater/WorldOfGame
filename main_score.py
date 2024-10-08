@@ -7,6 +7,7 @@ app = Flask(__name__)
 SCORES_FILE_NAME = "Scores.txt"
 BAD_RETURN_CODE = -1
 
+
 @app.route('/')
 def score_server():
     try:
@@ -43,10 +44,12 @@ def score_server():
         """
     return render_template_string(html)
 
+
 @app.route('/wipe', methods=['POST'])
 def wipe_score_route():
     wipe_score()
     return redirect(url_for('score_server'))
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

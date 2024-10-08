@@ -1,6 +1,7 @@
 import random
 import requests
 
+
 def get_money_interval(difficulty):
     response = requests.get("https://api.exchangerate-api.com/v4/latest/USD")
     data = response.json()
@@ -13,6 +14,7 @@ def get_money_interval(difficulty):
 
     return interval, usd_amount
 
+
 def get_guess_from_user(usd_amount):
     while True:
         try:
@@ -21,8 +23,10 @@ def get_guess_from_user(usd_amount):
         except ValueError:
             print("Invalid input. Please enter a numeric value.")
 
+
 def compare_results(interval, user_guess):
     return interval[0] <= user_guess <= interval[1]
+
 
 def play(difficulty):
     interval, usd_amount = get_money_interval(difficulty)
