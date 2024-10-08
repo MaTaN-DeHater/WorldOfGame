@@ -8,25 +8,27 @@ def welcome():
 
 
 def start_play(user):
-    game_option = input("Please choose a game: \n"
-                        "1. Memory Game - a sequence of numbers will appear for 1 second and you have to guess it "
-                        "back. \n"
-                        "2. Guess Game - guess a number and see if you chose like the computer.\n"
-                        "3. Currency Roulette - try and guess the value of a random amount of USD in ILS. \n")
+    game_option = None
+    while game_option not in [1, 2, 3]:
+        try:
+            game_option = int(input("Please choose a game: \n"
+                                    "1. Memory Game - a sequence of numbers will appear for 1 second and you have to guess it "
+                                    "back. \n"
+                                    "2. Guess Game - guess a number and see if you chose like the computer.\n"
+                                    "3. Currency Roulette - try and guess the value of a random amount of USD in ILS. \n"))
+            if game_option not in [1, 2, 3]:
+                print("Invalid option. Please choose a valid game number.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
 
-    game_option = int(game_option)
-    if game_option not in [1, 2, 3]:
-        print("Invalid option. Please choose a valid game number.")
-        return
-
-    difficulty_level = input("Please choose a difficulty level between 1 and 5: ")
-    difficulty_level = int(difficulty_level)
-    if difficulty_level not in [1, 2, 3, 4, 5]:
-        print("Invalid difficulty level. Please choose a number between 1 and 5.")
-        return
-
-
-
+    difficulty_level = None
+    while difficulty_level not in [1, 2, 3, 4, 5]:
+        try:
+            difficulty_level = int(input("Please choose a difficulty level between 1 and 5: "))
+            if difficulty_level not in [1, 2, 3, 4, 5]:
+                print("Invalid difficulty level. Please choose a number between 1 and 5.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
 
     game_modules = {
         1: 'memory_game',
