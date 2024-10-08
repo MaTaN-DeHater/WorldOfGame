@@ -9,7 +9,7 @@ pipeline {
 
         stage('Run Games') {
             steps {
-                bat 'python app.py'
+                bat 'python main.py'
                 
             }
 
