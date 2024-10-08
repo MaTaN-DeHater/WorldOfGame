@@ -2,9 +2,20 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello') {
+     stage('Install Requirements') {
             steps {
-                bat 'python main.py'
+                bat 'pip install -r requirements.txt'
+            }
+
+        stage('Run Games') {
+            steps {
+                bat 'python app.py'
+                
+            }
+
+            stage('Run Score Page') {
+            steps {
+                bat 'python main_score.py'
                 
             }
         }
