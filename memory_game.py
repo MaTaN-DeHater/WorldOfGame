@@ -1,39 +1,29 @@
-# memory_game.py
 import random
-
+import time
 
 def generate_sequence(difficulty):
-    """
-    Generates a list of random numbers between 1 and 101 with length equal to difficulty.
-
-    :param difficulty: Length of the sequence to be generated.
-    :return: List of random numbers.
-    """
     return [random.randint(1, 101) for _ in range(difficulty)]
 
+def get_list_from_user(difficulty):
+    while True:
+        try:
+            user_input = input(f"Enter the {difficulty} numbers you remember, separated by spaces: ")
+            user_sequence = list(map(int, user_input.split()))
+            if len(user_sequence) == difficulty:
+                return user_sequence
+            else:
+                print(f"Please enter exactly {difficulty} numbers.")
+        except ValueError:
+            print("Invalid input. Please enter numbers separated by spaces.")
 
-def is_list_equal(list1, list2):
-    """
-    Compares two lists to check if they are identical.
+def is_list_equal(generated_sequence, user_sequence):
+    return generated_sequence == user_sequence
 
-    :param list1: First list.
-    :param list2: Second list.
-    :return: True if both lists are identical, False otherwise.
-    """
-    return list1 == list2
-
-
-def play(difficulty, user_sequence):
-    """
-    Initiates the Memory Game.
-
-    :param difficulty: The difficulty level which determines the length of the sequence.
-    :param user_sequence: List of numbers input by the user.
-    :return: True if the user wins, False if the user loses.
-    """
+def play(difficulty):
     generated_sequence = generate_sequence(difficulty)
-    print(f"Generated sequence: {generated_sequence}")  # This line is for testing; we'll display it on the UI
-    if is_list_equal(generated_sequence, user_sequence):
-        return True
-    else:
-        return False
+    print("Remember this sequence:")
+    print(generated_sequence)
+    time.sleep(0.7)
+    print("\033c", end="")  # Clear the console (works on Unix-based systems)
+    user_sequence = get_list_from_user(difficulty)
+    return is_list_equal(generated_sequence, user_sequence)
