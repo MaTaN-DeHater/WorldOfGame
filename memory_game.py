@@ -1,6 +1,8 @@
 import random
 import time
 
+import utils
+
 
 def generate_sequence(difficulty):
     return [random.randint(1, 101) for _ in range(difficulty)]
@@ -28,6 +30,6 @@ def play(difficulty):
     print("Remember this sequence:")
     print(generated_sequence)
     time.sleep(0.7)
-    print("\033c", end="")  # Clear the console (works on Unix-based systems)
+    utils.clear_console()
     user_sequence = get_list_from_user(difficulty)
     return is_list_equal(generated_sequence, user_sequence)
