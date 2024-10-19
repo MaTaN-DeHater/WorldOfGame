@@ -8,21 +8,13 @@ Welcome to **World of Game**, a thrilling gaming experience designed to challeng
 
 - Multiple levels of increasing difficulty
 - Responsive user interface for seamless gameplay
-- Engaging sound effects and animations
 - Saves game progress
 - Scalable architecture for adding new levels and features
 - Cross-platform compatibility (Windows, macOS, Linux)
 
 ## Technologies Used
 
-- **Language**: [Java/Python/etc.] (List all relevant programming languages)
-- **Framework**: (e.g., Flask, Spring, etc.)
-- **Database**: (If applicable)
+- **Language**: Python
+- **Framework**:  Flask
+- **Database**: NA
 - **Others**: (e.g., Docker, Jenkins, etc.)
-
-## Installation
-
-1. Clone the repository to your local machine:
-
-   ```bash
-   git clone https://github.com/MaTaN-DeHater/WorldOfGame.git
