@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 import sys
 import time
+import os
 
 def setup_driver():
   
@@ -13,8 +14,8 @@ def setup_driver():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
     
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
+    chromedriver_path = ChromeDriverManager().install()
+    driver = webdriver.Chrome(service=Service(chromedriver_path), options=options)
     return driver
 
 def test_wipe_scores_button(url):
