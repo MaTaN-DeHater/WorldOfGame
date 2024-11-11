@@ -1,6 +1,6 @@
 import random
 import time
-import utils
+import utils.utils as utils
 
 
 def generate_sequence(difficulty):
