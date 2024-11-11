@@ -36,7 +36,7 @@ pipeline {
         stage('Test: Scores Service') {
             steps {
                 script {
-                    def result = bat(script: "docker exec ${CONTAINER_NAME} python -c \"from WorldOfGame.tests.e2e import test_scores_service; exit(0) if test_scores_service('http://localhost:5000') else exit(1)\"", returnStatus: true)
+                    def result = bat(script: "docker exec ${CONTAINER_NAME} python /app/WorldOfGame/tests/e2e.py test_scores_service http://localhost:5000", returnStatus: true)
                     if (result != 0) {
                         error('Scores Service test failed')
                     }
@@ -47,7 +47,7 @@ pipeline {
         stage('Test: Wipe Scores Button') {
             steps {
                 script {
-                    def result = bat(script: "docker exec ${CONTAINER_NAME} python -c \"from WorldOfGame.tests.e2e import test_wipe_scores_button; exit(0) if test_wipe_scores_button('http://localhost:5000') else exit(1)\"", returnStatus: true)
+                    def result = bat(script: "docker exec ${CONTAINER_NAME} python /app/WorldOfGame/tests/e2e.py test_wipe_scores_button http://localhost:5000", returnStatus: true)
                     if (result != 0) {
                         error('Wipe Scores Button test failed')
                     }
