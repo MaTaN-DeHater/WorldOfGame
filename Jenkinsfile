@@ -59,12 +59,14 @@ pipeline {
         stage('Finalize') {
             steps {
                 script {
-                    
-                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} down"
-                   
-                     withDockerRegistry([credentialsId: "${DOCKER_CREDENTIALS}", url: 'https://registry.hub.docker.com'])  {
-                        bat "docker-compose push"
-                    }
+                     withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
+
+            sh """
+                echo ${env.DOCKER_HUB_PASSWORD} | docker login -u ${env.DOCKER_HUB_USERNAME} --password-stdin
+                docker tag matanx/wog:latest ${DOCKER_IMAGE}
+                docker push ${DOCKER_IMAGE}
+            """
+        }
                 }
             }
         }
