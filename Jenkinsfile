@@ -2,55 +2,55 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'matanx/wog:latest'
-        DOCKER_COMPOSE_FILE = 'docker-compose.yml'
+        DOCKER_IMAGE = "matanx/wog:latest"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
-                dir('WorldOfGame') {
-                    git url: 'https://github.com/MaTaN-DeHater/WorldOfGame.git'
+            
+                git credentialsId: 'github-credentials', url: 'https://github.com/MaTaN-DeHater/WorldOfGame'
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+               
+                script {
+                    sh 'docker-compose -f docker-compose.yml build'
                 }
             }
         }
 
-        stage('Build') {
+        stage('Run Docker Container') {
+            steps {
+               
+                script {
+                    sh 'docker-compose -f docker-compose.yml up -d'
+                }
+            }
+        }
+
+        stage('Run Tests') {
             steps {
                 script {
                     
-                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} build"
+                    sh 'docker-compose exec wog_service python /app/WorldOfGame/tests/e2e.py'
                 }
             }
         }
 
-        stage('Run') {
+        stage('Push Docker Image') {
             steps {
                 script {
-                    
-                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d"
-                }
-            }
-        }
-
-        stage('Test: Scores Service') {
-            steps {
-                script {
-                    def result = bat(script: "docker-compose exec wog_service python /app/WorldOfGame/tests/e2e.py test_scores_service http://localhost:5000", returnStatus: true)
-                    if (result != 0) {
-                        echo "Scores Service test failed"
-                    }
-                }
-            }
-        }
-
-        stage('Test: Wipe Scores Button') {
-            steps {
-                script {
-                    def result = bat(script: "docker-compose exec wog_service python /app/WorldOfGame/tests/e2e.py test_wipe_scores_button http://localhost:5000", returnStatus: true)
-                    if (result != 0) {
-                        echo "Wipe Scores Button test failed"
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', 
+                                                      usernameVariable: 'DOCKER_HUB_USERNAME', 
+                                                      passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
+                        sh '''
+                        echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin
+                        docker tag ${DOCKER_IMAGE} ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE}
+                        docker push ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE}
+                        '''
                     }
                 }
             }
@@ -58,15 +58,9 @@ pipeline {
 
         stage('Finalize') {
             steps {
+               
                 script {
-                     withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
-
-            sh """
-                echo ${env.DOCKER_HUB_PASSWORD} | docker login -u ${env.DOCKER_HUB_USERNAME} --password-stdin
-                docker tag matanx/wog:latest ${DOCKER_IMAGE}
-                docker push ${DOCKER_IMAGE}
-            """
-        }
+                    sh 'docker-compose -f docker-compose.yml down || true'
                 }
             }
         }
@@ -74,10 +68,15 @@ pipeline {
 
     post {
         always {
-            script {
-               
-                bat "docker-compose -f ${DOCKER_COMPOSE_FILE} down || true"
-            }
+            
+            sh 'docker-compose -f docker-compose.yml down || true'
+            cleanWs()
+        }
+        failure {
+            echo 'Build or tests failed. Check the console output for details.'
+        }
+        success {
+            echo 'All stages completed successfully!'
         }
     }
 }
