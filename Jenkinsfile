@@ -18,7 +18,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def dockerImage = docker.build(DOCKER_IMAGE, 'WorldOfGame')
+                    
+                    bat "docker build -t ${DOCKER_IMAGE} WorldOfGame"
                 }
             }
         }
@@ -26,7 +27,8 @@ pipeline {
         stage('Run') {
             steps {
                 script {
-                    def container = docker.image(DOCKER_IMAGE).run("-d -p 8777:5000 -v $WORKSPACE/scores.json:/app/scores.json")
+                    
+                    bat "docker run -d -p 8777:5000 -v %WORKSPACE%\\scores.json:/app/scores.json ${DOCKER_IMAGE}"
                 }
             }
         }
@@ -34,8 +36,8 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    // Run the tests and check if they pass
-                    def result = sh(script: 'python WorldOfGame/tests/e2e.py', returnStatus: true)
+                    
+                    def result = bat(script: 'python WorldOfGame\\tests\\e2e.py', returnStatus: true)
                     if (result != 0) {
                         error('Tests failed')
                     }
@@ -47,14 +49,14 @@ pipeline {
             steps {
                 script {
                     
-                    def containerId = sh(script: "docker ps -q --filter ancestor=${DOCKER_IMAGE}", returnStdout: true).trim()
+                    def containerId = bat(script: "docker ps -q --filter ancestor=${DOCKER_IMAGE}", returnStdout: true).trim()
                     if (containerId) {
-                        sh "docker stop ${containerId}"
+                        bat "docker stop ${containerId}"
                     }
-                    
+
                     
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-                        docker.image(DOCKER_IMAGE).push()
+                        bat "docker push ${DOCKER_IMAGE}"
                     }
                 }
             }
