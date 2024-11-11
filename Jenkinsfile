@@ -27,7 +27,7 @@ pipeline {
         stage('Run') {
             steps {
                 script {
-                    
+                   
                     bat "docker run -d -p 8777:5000 -v %WORKSPACE%\\scores.json:/app/scores.json ${DOCKER_IMAGE}"
                 }
             }
@@ -36,10 +36,17 @@ pipeline {
         stage('Test') {
             steps {
                 script {
+                   
+                    def containerId = bat(script: "docker ps -q --filter ancestor=${DOCKER_IMAGE}", returnStdout: true).trim()
                     
-                    def result = bat(script: 'python WorldOfGame\\tests\\e2e.py', returnStatus: true)
-                    if (result != 0) {
-                        error('Tests failed')
+                    if (containerId) {
+                        
+                        def result = bat(script: "docker exec ${containerId} python /app/WorldOfGame/tests/e2e.py", returnStatus: true)
+                        if (result != 0) {
+                            error('Tests failed')
+                        }
+                    } else {
+                        error("Container not found for image ${DOCKER_IMAGE}")
                     }
                 }
             }
