@@ -5,19 +5,30 @@ from webdriver_manager.chrome import ChromeDriverManager
 import sys
 import time
 
-def test_wipe_scores_button(url):
+def setup_driver():
+  
     options = webdriver.ChromeOptions()
+   
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-gpu")
+    
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
+    return driver
+
+def test_wipe_scores_button(url):
+    driver = setup_driver()
     
     driver.get(url)
     
     try:
-       
+      
         wipe_button = driver.find_element(By.XPATH, "/html/body/form/button")
         wipe_button.click()
         
         time.sleep(1)  
+        
         
         score_element = driver.find_element(By.ID, "score")
         return "No scores available." in score_element.text
@@ -30,9 +41,7 @@ def test_wipe_scores_button(url):
         driver.quit()
 
 def test_scores_service(url):
-    options = webdriver.ChromeOptions()
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
+    driver = setup_driver()
     
     try:
         driver.get(url)
