@@ -1,4 +1,4 @@
-from score import add_score
+from utils.score import add_score
 
 
 def welcome():

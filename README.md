@@ -59,15 +59,21 @@ world-of-game/
 │   └── currency_game.py
 ├── utils/
 │   ├── score.py
+│   ├── score.json
 │   └── utils.py
+├── tests/
+│   ├── e2e.py
 ├── app.py
 ├── main_score.py
+├── Dockerfile
+├── Docker-compose.yml
+├── requirements.txt
 └── README.md
 ```
 
 ## Technologies
 
-- Python 3.9+
+- Python 3.12
 - Flask (Web Framework)
 - JSON (Score Storage)
 
@@ -84,14 +90,4 @@ world-of-game/
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 ```
 
-Key improvements made:
 
-1. Added badges to show Python version, Flask version, and license
-2. Structured features into clear categories
-3. Added installation and usage instructions
-4. Included project structure tree
-5. Added contributing guidelines
-6. Organized technologies section
-7. Added license information
-
-Would you like me to explain any of these sections in more detail?

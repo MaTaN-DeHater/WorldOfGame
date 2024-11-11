@@ -1,7 +1,7 @@
 from flask import Flask, render_template_string, redirect, url_for
 import os
 import json
-from score import wipe_score
+from utils.score import wipe_score
 
 app = Flask(__name__)
 
