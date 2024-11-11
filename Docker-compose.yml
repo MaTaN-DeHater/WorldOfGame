@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   web:
     build:
@@ -13,10 +11,9 @@ services:
     volumes:
       - .:/app
     command: flask run --host=0.0.0.0
-
   # Add other services if needed, e.g., a database service
 
-# Optional: Define a network if needed
+  # Optional: Define a network if needed
 networks:
   default:
     driver: bridge
