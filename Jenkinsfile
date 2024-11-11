@@ -8,8 +8,9 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-            
-                git credentialsId: 'github-credentials', url: 'https://github.com/MaTaN-DeHater/WorldOfGame'
+              checkout scm
+                dir('WorldOfGame') {
+                    git url: 'https://github.com/MaTaN-DeHater/WorldOfGame.git'
             }
         }
         
