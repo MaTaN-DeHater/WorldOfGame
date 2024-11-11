@@ -62,7 +62,7 @@ pipeline {
                     
                     bat "docker-compose -f ${DOCKER_COMPOSE_FILE} down"
                    
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker login -u matanx -p dckr_pat_rPauvIFtINW3Y9qzfz0fTdsCKPI') {
                         bat "docker-compose push"
                     }
                 }
