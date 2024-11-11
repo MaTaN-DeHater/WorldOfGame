@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'matanx/wog:latest'
-        CONTAINER_NAME = 'wog_container'
+        DOCKER_COMPOSE_FILE = 'docker-compose.yml'
     }
 
     stages {
@@ -19,7 +19,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    bat "docker build -t ${DOCKER_IMAGE} WorldOfGame"
+                    
+                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} build"
                 }
             }
         }
@@ -27,9 +28,8 @@ pipeline {
         stage('Run') {
             steps {
                 script {
-                   
-                    bat "docker rm -f ${CONTAINER_NAME} || exit 0"
-                    bat "docker run -d --name ${CONTAINER_NAME} -p 8777:5000 -v %WORKSPACE%\\scores.json:/app/scores.json ${DOCKER_IMAGE}"
+                    
+                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d"
                 }
             }
         }
@@ -37,9 +37,9 @@ pipeline {
         stage('Test: Scores Service') {
             steps {
                 script {
-                    def result = bat(script: "docker exec ${CONTAINER_NAME} python /app/WorldOfGame/tests/e2e.py test_scores_service http://localhost:5000", returnStatus: true)
+                    def result = bat(script: "docker-compose exec wog_service python /app/WorldOfGame/tests/e2e.py test_scores_service http://localhost:5000", returnStatus: true)
                     if (result != 0) {
-                        echo 'Scores Service test failed'
+                        echo "Scores Service test failed"
                     }
                 }
             }
@@ -48,9 +48,9 @@ pipeline {
         stage('Test: Wipe Scores Button') {
             steps {
                 script {
-                    def result = bat(script: "docker exec ${CONTAINER_NAME} python /app/WorldOfGame/tests/e2e.py test_wipe_scores_button http://localhost:5000", returnStatus: true)
+                    def result = bat(script: "docker-compose exec wog_service python /app/WorldOfGame/tests/e2e.py test_wipe_scores_button http://localhost:5000", returnStatus: true)
                     if (result != 0) {
-                        echo 'Wipe Scores Button test failed'
+                        echo "Wipe Scores Button test failed"
                     }
                 }
             }
@@ -59,10 +59,11 @@ pipeline {
         stage('Finalize') {
             steps {
                 script {
-                    bat "docker stop ${CONTAINER_NAME} || exit 0"
-                    bat "docker rm ${CONTAINER_NAME} || exit 0"
+                    
+                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} down"
+                   
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-                        bat "docker push ${DOCKER_IMAGE}"
+                        bat "docker-compose push"
                     }
                 }
             }
@@ -72,9 +73,8 @@ pipeline {
     post {
         always {
             script {
-                bat "docker stop ${CONTAINER_NAME} || exit 0"
-                bat "docker rm ${CONTAINER_NAME} || exit 0"
-                echo "Pipeline completed, all stages have run."
+               
+                bat "docker-compose -f ${DOCKER_COMPOSE_FILE} down || true"
             }
         }
     }
