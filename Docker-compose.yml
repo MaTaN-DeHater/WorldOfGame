@@ -1,5 +1,5 @@
 services:
-  web:
+  wog_service:
     build:
       context: .
       dockerfile: Dockerfile
@@ -12,9 +12,7 @@ services:
     volumes:
       - .:/app
     command: flask run --host=0.0.0.0
-  
 
-  
 networks:
   default:
     driver: bridge
