@@ -4,6 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     image: matanx/wog:latest
+    container_name: WorldOfGame
     ports:
       - "5000:5000"
     environment:
