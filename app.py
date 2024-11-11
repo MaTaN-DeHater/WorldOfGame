@@ -52,5 +52,5 @@ def start_play(user):
             add_score(user, selected_game, difficulty_level)
 
         replay = input("Do you want to play another game? (yes/no): ").strip().lower()
-        if replay != 'yes':
+        if replay != 'yes' and replay != 'y':
             break
