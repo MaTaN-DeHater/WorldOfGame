@@ -21,7 +21,7 @@ def score_server():
                     for game, difficulties in games.items():
                         score_text += f"  Game: {game}\n"
                         for difficulty, score in difficulties.items():
-                            score_text += f"    Difficulty {difficulty}: {score} Points\n"
+                            score_text += f"    Difficulty {difficulty}: {score} score\n"
         else:
             score_text = "No scores available."
         html = f"""
