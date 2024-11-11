@@ -22,23 +22,14 @@ pipeline {
                     bat "docker build -t ${DOCKER_IMAGE} WorldOfGame"
                 }
             }
-            post {
-                always {
-                    echo "Build stage completed"
-                }
-            }
         }
 
         stage('Run') {
             steps {
                 script {
-                    bat "docker rm -f ${CONTAINER_NAME} || true"
+                   
+                    bat "docker rm -f ${CONTAINER_NAME} || exit 0"
                     bat "docker run -d --name ${CONTAINER_NAME} -p 8777:5000 -v %WORKSPACE%\\scores.json:/app/scores.json ${DOCKER_IMAGE}"
-                }
-            }
-            post {
-                always {
-                    echo "Run stage completed"
                 }
             }
         }
@@ -52,11 +43,6 @@ pipeline {
                     }
                 }
             }
-            post {
-                always {
-                    echo "Scores Service test stage completed"
-                }
-            }
         }
 
         stage('Test: Wipe Scores Button') {
@@ -68,26 +54,16 @@ pipeline {
                     }
                 }
             }
-            post {
-                always {
-                    echo "Wipe Scores Button test stage completed"
-                }
-            }
         }
 
         stage('Finalize') {
             steps {
                 script {
-                    bat "docker stop ${CONTAINER_NAME} || true"
-                    bat "docker rm ${CONTAINER_NAME} || true"
+                    bat "docker stop ${CONTAINER_NAME} || exit 0"
+                    bat "docker rm ${CONTAINER_NAME} || exit 0"
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
                         bat "docker push ${DOCKER_IMAGE}"
                     }
-                }
-            }
-            post {
-                always {
-                    echo "Finalize stage completed"
                 }
             }
         }
@@ -96,8 +72,8 @@ pipeline {
     post {
         always {
             script {
-                bat "docker stop ${CONTAINER_NAME} || true"
-                bat "docker rm ${CONTAINER_NAME} || true"
+                bat "docker stop ${CONTAINER_NAME} || exit 0"
+                bat "docker rm ${CONTAINER_NAME} || exit 0"
                 echo "Pipeline completed, all stages have run."
             }
         }
