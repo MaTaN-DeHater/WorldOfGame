@@ -28,7 +28,7 @@ pipeline {
             steps {
                 script {
                     
-                    bat "docker run -d -p 5000:5000 -v %WORKSPACE%\\scores.json:/app/scores.json ${DOCKER_IMAGE}"
+                    bat "docker run -d -p 8777:5000 -v %WORKSPACE%\\scores.json:/app/scores.json ${DOCKER_IMAGE}"
                 }
             }
         }
