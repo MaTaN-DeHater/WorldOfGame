@@ -52,9 +52,9 @@ pipeline {
             }
         }
 
-        stage('Finalize') {
-            steps {
-                script {
+       stage('Finalize') {
+    steps {
+        script {
             echo 'Stopping Docker container...'
             bat 'docker stop WorldOfGame'
             bat 'docker rm WorldOfGame'
@@ -66,8 +66,10 @@ pipeline {
                 echo 'Pushing Docker image to DockerHub...'
                 bat "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
             }
-            }
         }
+    }
+}
+
     }
 
     post {
