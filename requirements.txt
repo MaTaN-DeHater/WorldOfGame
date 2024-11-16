@@ -3,3 +3,4 @@ flask==2.3.3
 webdriver-manager==4.0.0
 forex-python==1.8
 requests==2.31.0
+chromedriver-autoinstaller~=0.6.4

@@ -1,63 +1,24 @@
-FROM python:3.9-slim
+# Use the official Python 3.12 slim image as a base image
+FROM python:3.12-slim
 
-
+# Set the working directory inside the container to /app
 WORKDIR /app
 
-
-RUN apt-get update && apt-get install -y \
-    wget \
-    unzip \
-    curl \
-    gnupg \
-    # Install Chrome dependencies
-    fonts-liberation \
-    libappindicator3-1 \
-    libasound2 \
-    libatk-bridge2.0-0 \
-    libatk1.0-0 \
-    libcups2 \
-    libdbus-1-3 \
-    libgbm1 \
-    libgtk-3-0 \
-    libnspr4 \
-    libnss3 \
-    libx11-xcb1 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxrandr2 \
-    xdg-utils \
-    # Clean up
-    && rm -rf /var/lib/apt/lists/*
-
-
-RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-    echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
-    apt-get update && \
-    apt-get install -y google-chrome-stable && \
-    rm -rf /var/lib/apt/lists/*
-
-
-RUN wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip && \
-    unzip /tmp/chromedriver.zip -d /usr/local/bin/ && \
-    rm /tmp/chromedriver.zip
-
-
-ENV CHROME_BIN=/usr/bin/google-chrome \
-    CHROME_DRIVER=/usr/local/bin/chromedriver
-
+# Copy all project files from the local directory to /app in the container
 COPY . /app
 
-
+# Install the required Python packages from the requirements.txt file
 RUN pip install --no-cache-dir -r requirements.txt
 
-
+# Copy the Scores.txt file from the local directory to the root of the container
 COPY scores.json /scores.json
 
+# Set environment variables for Flask
+ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_PORT=8777
 
+# Start the Flask server directly (without Gunicorn)
+CMD ["python", "main_score.py"]
+
+# Expose the port so Docker knows the app will be using it
 EXPOSE 8777
-
-
-ENV FLASK_APP=main_score.py
-
-
-CMD ["flask", "run", "--host=0.0.0.0"]

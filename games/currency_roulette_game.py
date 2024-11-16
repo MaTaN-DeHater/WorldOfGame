@@ -1,15 +1,22 @@
 import random
 import requests
+from forex_python.converter import CurrencyRates
 
 
 def get_money_interval(difficulty):
-    response = requests.get("https://api.exchangerate-api.com/v4/latest/USD")
-    data = response.json()
-    exchange_rate = data['rates']['ILS']
+    c = CurrencyRates()
+    try:
+        exchange_rate = c.get_rate('USD', 'ILS')
+    except Exception as e:
+        print("Error fetching exchange rate. Please try again later.")
+        return None, None
 
     usd_amount = random.randint(1, 100)
+
     ils_value = usd_amount * exchange_rate
+
     allowed_difference = 10 - difficulty
+
     interval = (ils_value - allowed_difference, ils_value + allowed_difference)
 
     return interval, usd_amount

@@ -2,78 +2,69 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'matanx/wog:latest'
-        CONTAINER_NAME = 'wog_container'
-        DOCKER_COMPOSE_FILE = 'docker-compose.yml'
-    }
+        DOCKER_IMAGE = 'matanx/wog'
+        DOCKER_TAG = 'latest'
+        }
 
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
-                dir('WorldOfGame') {
-                    git url: 'https://github.com/MaTaN-DeHater/WorldOfGame.git'
+                echo 'Checking out repository...'
+                    branch: 'main', url: 'https://github.com/MaTaN-DeHater/WorldOfGame.git'
                 }
             }
         }
 
         stage('Build') {
             steps {
-                script {
-                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} build"
-                }
+                 echo 'Building Docker image...'
+                    docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
             }
         }
 
         stage('Run') {
             steps {
                 script {
-                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d"
+
+                    echo 'Running Docker container...'
+
+                    bat """
+                    docker run -d -p 8777:8777 -v \"${pwd()}/scores.json\":/scores.json --name score_app ${DOCKER_IMAGE}:${DOCKER_TAG}
+                    """
                 }
             }
         }
 
-        stage('Test: Scores Service') {
+          stage('Install dependencies') {
             steps {
                 script {
-                    def result = bat(script: "docker-compose exec ${CONTAINER_NAME} python -c 'from WorldOfGame.tests.e2e import test_scores_service; exit(0) if test_scores_service(\"http://localhost:5000\") else exit(1)'", returnStatus: true)
-                    if (result != 0) {
-                        error('Scores Service test failed')
-                    }
+                    echo 'Installing dependencies...'
+                    bat 'pip install -r requirements.txt'
                 }
             }
         }
 
-        stage('Test: Wipe Scores Button') {
+         stage('Test') {
             steps {
                 script {
-                    def result = bat(script: "docker-compose exec ${CONTAINER_NAME} python -c 'from WorldOfGame.tests.e2e import test_wipe_scores_button; exit(0) if test_wipe_scores_button(\"http://localhost:5000\") else exit(1)'", returnStatus: true)
-                    if (result != 0) {
-                        error('Wipe Scores Button test failed')
-                    }
+
+                    echo 'Running Selenium tests...'
+                    bat 'python tests/e2e.py'
                 }
             }
         }
 
-        stage('Push Docker Image') {
+      stage('Finalize') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', 
-                                                      usernameVariable: 'DOCKER_HUB_USERNAME', 
-                                                      passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
-                        bat '''
-                            echo %DOCKER_HUB_PASSWORD% | docker login -u %DOCKER_HUB_USERNAME% --password-stdin
-                            docker-compose -f ${DOCKER_COMPOSE_FILE} push
-                        '''
-                    }
-                }
-            }
-        }
 
-        stage('Finalize') {
-            steps {
-                script {
-                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} down || true"
+                    echo 'Stopping Docker container...'
+                    bat 'docker stop WorldOfGame'
+                    bat 'docker rm WorldOfGame'
+
+
+                    echo 'Pushing Docker image to DockerHub...'
+                    bat "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
                 }
             }
         }
@@ -81,9 +72,9 @@ pipeline {
 
     post {
         always {
-            script {
-                bat "docker-compose -f ${DOCKER_COMPOSE_FILE} down || true"
-            }
+
+            echo 'Cleaning up Docker resources...'
+            bat 'docker system prune -f'
         }
     }
 }
