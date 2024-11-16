@@ -3,6 +3,7 @@ version: '3.8'
 services:
   app:
     build: .
+    image: matanx/wog:latest
     container_name: WorldOfGame
     ports:
       - "8777:8777"
