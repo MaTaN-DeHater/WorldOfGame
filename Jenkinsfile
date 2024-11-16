@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Checking out repository...'
-                    branch: 'main', url: 'https://github.com/Matan-Shabi/WorldOfGame.git'
+                    branch: 'master', url: 'https://github.com/Matan-Shabi/WorldOfGame.git'
                 }
             }
         }
