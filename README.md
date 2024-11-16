@@ -74,14 +74,13 @@ world-of-game/
 │   ├── memory_game.py
 │   ├── guess_game.py
 │   └── currency_game.py
-├── utils/
-│   ├── score.py
-│   ├── score.json
-│   └── utils.py
 ├── tests/
 │   ├── e2e.py
 ├── app.py
 ├── main_score.py
+├── score.py
+├── score.json
+├── utils.py
 ├── Dockerfile
 ├── docker-compose.yml
 ├── Jenkinsfile
