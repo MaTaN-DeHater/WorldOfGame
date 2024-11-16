@@ -1,26 +1,16 @@
 import random
 import requests
-from forex_python.converter import CurrencyRates
 
+
+
+FIXED_EXCHANGE_RATE = 3.5
 
 def get_money_interval(difficulty):
-    c = CurrencyRates()
-    try:
-        exchange_rate = c.get_rate('USD', 'ILS')
-    except Exception as e:
-        print("Error fetching exchange rate. Please try again later.")
-        return None, None
-
     usd_amount = random.randint(1, 100)
-
-    ils_value = usd_amount * exchange_rate
-
+    ils_value = usd_amount * FIXED_EXCHANGE_RATE
     allowed_difference = 10 - difficulty
-
     interval = (ils_value - allowed_difference, ils_value + allowed_difference)
-
     return interval, usd_amount
-
 
 def get_guess_from_user(usd_amount):
     while True:
