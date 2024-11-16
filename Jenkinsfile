@@ -55,13 +55,17 @@ pipeline {
         stage('Finalize') {
             steps {
                 script {
-                    echo 'Stopping Docker container...'
-                    bat 'docker stop WorldOfGame'
-                    bat 'docker rm WorldOfGame'
+            echo 'Stopping Docker container...'
+            bat 'docker stop WorldOfGame'
+            bat 'docker rm WorldOfGame'
 
-                    echo 'Pushing Docker image to DockerHub...'
-                    bat "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
-                }
+            withCredentials([usernamePassword(credentialsId: 'dockerhub_credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                echo 'Logging in to Docker Hub...'
+                bat "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
+
+                echo 'Pushing Docker image to DockerHub...'
+                bat "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
+            }
             }
         }
     }
