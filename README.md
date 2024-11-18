@@ -6,7 +6,7 @@ A collection of engaging mini-games built with Python, featuring score tracking,
 
 ## Overview
 
-The **World of Game** project is not just a collection of fun and engaging Python games, but also a showcase of modern software development practices. It features continuous integration, containerized environments, and automated testing to demonstrate practical DevOps skills. The project integrates tools like **Jenkins**, **Docker**, and **Selenium** to ensure scalability, reliability, and maintainability, making it an ideal demonstration of DevOps automation expertise.
+The **World of Game** project is not just about creating a collection of fun Python mini-games; it is also a showcase of my proficiency in modern DevOps practices. I've implemented **continuous integration**, **containerized environments**, **automated testing**, and **orchestrated deployments** to demonstrate my practical skills in DevOps. By using tools like **Jenkins**, **Docker**, **Docker Compose**, and **Selenium**, I've ensured that this project is scalable, reliable, and maintainable, all while highlighting my expertise in DevOps automation.
 
 ## Key Features
 
@@ -23,22 +23,27 @@ The **World of Game** project is not just a collection of fun and engaging Pytho
   - Simple command-line interface with multiple difficulty levels.
   - Cross-platform compatibility for Windows, macOS, and Linux.
 
-- **DevOps Integration**:
-  - Automated build and deployment using **Jenkins Pipeline**.
-  - Containerized application with **Docker** and orchestrated with **Docker Compose**.
-  - **Automated End-to-End Testing** with **Selenium**.
-
 ## DevOps and Automation Tools
 
-This project leverages a variety of tools to demonstrate a complete DevOps workflow:
+This project demonstrates a complete DevOps workflow, featuring **CI/CD**, **containerization**, **automated testing**, and **orchestrated deployments**:
 
-- **Jenkins Pipeline**: Automates the build and testing phases of the CI/CD process, showcasing skills in continuous integration and delivery.
-- **Docker and Docker Compose**: Containerize each component for consistent deployment across environments, with Docker Compose managing multi-container deployments.
-- **Selenium**: Automated testing of the web interface to ensure high-quality and reliable user experiences.
+- **Jenkins Pipeline**: Automates the build, test, and deployment phases of the CI/CD process. This showcases my practical skills in continuous integration and delivery.
+- **Docker & Docker Compose**: Every component is containerized to ensure consistent deployment across different environments. Docker Compose manages multi-container deployments, making it seamless to run the game and the web leaderboard.
+- **Selenium**: Automated end-to-end testing of the web interface, ensuring a high-quality and reliable user experience.
 
-These tools are integrated to provide a streamlined, automated development process, ensuring faster releases, reduced manual errors, and an efficient deployment pipeline.
+These tools work in synergy to streamline the development and deployment process, minimizing manual errors, accelerating delivery, and ensuring an efficient CI/CD pipeline.
+
+## CI/CD Pipeline and Containerization
+
+The Jenkins pipeline and Docker integration demonstrate real-world automation and deployment techniques:
+
+- **Continuous Integration**: Jenkins automates the building and testing of the code for every push, ensuring code quality and fast feedback.
+- **Containerized Deployment**: Using **Docker** and **Docker Compose** helps create isolated environments that replicate production. This guarantees consistency between development, testing, and production environments.
+- **Automated Testing**: **Selenium** is used to verify the functionality of the web-based leaderboard, providing confidence in the application through automated testing.
 
 ## Installation
+
+To get started, clone the repository and install the dependencies.
 
 1. Clone the repository:
 
@@ -66,6 +71,28 @@ These tools are integrated to provide a streamlined, automated development proce
   python main_score.py
   ```
 
+## Running with Docker Compose
+
+To run the project using Docker Compose, ensuring all components (game backend, web leaderboard interface) are orchestrated correctly:
+
+```bash
+docker-compose up --build
+```
+
+## Docker Image on Docker Hub
+
+The Docker image for this project is available on Docker Hub:
+
+[Docker Hub - World of Game](https://hub.docker.com/r/matanx/wog)
+
+You can pull the image directly using:
+
+```bash
+docker pull matanx/wog
+```
+
+This command will build the Docker images and start the containers for the game service and web interface, ensuring seamless deployment.
+
 ## Project Structure
 
 ```
@@ -90,34 +117,16 @@ world-of-game/
 
 ## Technologies Used
 
-- **Python 3.12**: Core language for the games.
+- **Python 3.12**: Core language for the game logic.
 - **Flask**: Lightweight web framework for the leaderboard interface.
 - **JSON**: Simple score storage format.
-- **Docker & Docker Compose**: Containerization for consistent deployment.
-- **Jenkins**: CI/CD pipeline to automate builds and testing.
-- **Selenium**: Automated testing to verify game behavior.
-
-## CI/CD Pipeline and Containerization
-
-The Jenkins pipeline and Docker integration demonstrate real-world automation and deployment techniques:
-
-- **Build Automation**: Jenkins automates building and testing the code on each push, ensuring quality.
-- **Containerization**: Docker is used to create isolated environments, ensuring consistency across development, testing, and production.
-- **Deployment Orchestration**: Docker Compose brings all components together seamlessly, facilitating testing and scalability.
-
-## Running with Docker Compose
-
-To run the project using Docker Compose, ensuring all components (backend, web interface) are orchestrated correctly:
-
-```bash
-docker-compose up --build
-```
-
-This will build the Docker images and start the containers for the game service and web interface.
+- **Docker & Docker Compose**: Used for containerization, enabling consistent deployment and environment replication.
+- **Jenkins**: Automates CI/CD pipelines, building, and testing processes.
+- **Selenium**: Enables automated testing to verify game behavior and UI functionality.
 
 ## Contributing
 
-Contributions are welcome! To get started:
+Contributions are always welcome! To get started:
 
 1. Fork the repository.
 2. Create your feature branch (`git checkout -b feature/amazing-feature`).
@@ -131,7 +140,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-For more information or collaboration inquiries, please feel free to reach out via [LinkedIn](https://www.linkedin.com/in/matan-shabi/).
+For more information or collaboration inquiries, feel free to reach out via [LinkedIn](https://www.linkedin.com/in/matan-shabi/).
 
 ---
+
+
 
